@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const root = document.getElementById("root");
+
+      function MinutesToHours() {
+        const [amount, serAmount] = React.useState(0);
+        const [minutesDisabled, setFlip] = React.useState(false);
+
+        function updateMinutes(e) {
+          serAmount(e.target.value);
+        }
+
+        function flip() {
+          setFlip((curr) => !curr);
+          reset();
+        }
+        function reset() {
+          serAmount(0);
+        }
+        return (
+          <div>
+            <label htmlFor="minutes">Minutes</label>
+            <input
+              id="minutes"
+              placeholder="Minutes"
+              type="number"
+              value={minutesDisabled ? amount * 60 : amount}
+              onChange={updateMinutes}
+              disabled={minutesDisabled ? true : false}
+            />
+            <br />
+            <label htmlFor="hours">Hours</label>
+            <input
+              id="hours"
+              placeholder="Hours"
+              type="number"
+              value={minutesDisabled ? amount : Math.floor(amount / 60)}
+              disabled={minutesDisabled ? false : true}
+              onChange={updateMinutes}
+            />
+            <br />
+            <button onClick={reset} style={{ margin: "5px", padding: "5px" }}>
+              Reset
+            </button>
+            <button onClick={flip} style={{ margin: "5px", padding: "5px" }}>
+              {minutesDisabled ? "Minutes⇒Hours" : "Hours⇒Minutes"}
+            </button>
+          </div>
+        );
+      }
+
+      function KmsToMiles() {
+        const [amount, setAmount] = React.useState("0");
+        const [kmsInputOk, setKmsInputOk] = React.useState(false);
+
+        function reset() {
+          setAmount(0);
+        }
+        function updateAmount(e) {
+          setAmount(e.target.value);
+        }
+        function invert() {
+          setKmsInputOk((curr) => !curr);
+          reset();
+        }
+
+        return (
+          <div>
+            <label htmlFor="Kms">Kms</label>
+            <input
+              id="Kms"
+              placeholder="Kms"
+              type="number"
+              value={kmsInputOk ? amount * 1.60934 : amount}
+              onChange={updateAmount}
+              disabled={kmsInputOk ? true : false}
+            />
+            <br />
+            <label htmlFor="miles">Miles</label>
+            <input
+              id="miles"
+              placeholder="Miles"
+              type="number"
+              value={kmsInputOk ? amount : amount / 0.621371}
+              onChange={updateAmount}
+              disabled={kmsInputOk ? false : true}
+            />
+            <br />
+            <button onClick={reset} style={{ margin: "5px", padding: "5px" }}>
+              Reset
+            </button>
+            <button onClick={invert} style={{ margin: "5px", padding: "5px" }}>
+              {kmsInputOk ? "Kims⇒Miles" : "Miles⇒Kms"}
+            </button>
+          </div>
+        );
+      }
+
+      function App() {
+        const [index, setIndex] = React.useState("init");
+        const onSelect = (e) => setIndex(e.target.value);
+
+        return (
+          <div>
+            <h1>Super Converter</h1>
+            <select onChange={onSelect}>
+              <option value="init">select one item</option>
+              <option value="MtoH">Minutues & Hours</option>
+              <option value="KtoM">Kms & Miles</option>
+            </select>
+            <hr />
+            {index === "MtoH" && <MinutesToHours />}
+            {index === "KtoM" && <KmsToMiles />}
+            {/*
+            <MinutesToHours />
+            <KmsToMiles />
+          */}
+          </div>
+        );
+      }
+      ReactDOM.render(<App />, root);
+    </script>
+  </body>
+</html>

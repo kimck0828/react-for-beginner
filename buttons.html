@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.js"
+      integrity="sha512-Ttnt6nUh/1oV+4T/KWkG/ORvlIEOZohMCT/GIzelxTceoIreR2A1r6zmgFnEvi7GgstoDblmpMO/Gi9CXKTqGQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const root = document.getElementById("root");
+
+      function Btn({ buttonName, onChange, fontSize = 12 }) {
+        console.log(`${buttonName} rendering`);
+        return (
+          <button
+            style={{
+              backgroundColor: "tomato",
+              color: "white",
+              border: 0,
+              padding: "5px 10px",
+              margin: "0 5px",
+              fontSize: "20px",
+              borderRadius: 10,
+              fontSize,
+            }}
+            onClick={onChange}
+          >
+            {buttonName}
+          </button>
+        );
+      }
+      const MemorizeBtn = React.memo(Btn);
+      Btn.propTypes = {
+        text: PropTypes.string.isRequired,
+        fontSize: PropTypes.number,
+      };
+
+      function App() {
+        console.log("APP rendering");
+        const [text, setText] = React.useState("");
+        const onChange = () => setText("Revert Text");
+
+        return (
+          <div>
+            <h1>Super Converter</h1>
+            <MemorizeBtn buttonName="Save Button" onChange={onChange} />
+            <MemorizeBtn buttonName="Continue" fontSize={15} />
+          </div>
+        );
+      }
+      ReactDOM.render(<App />, root);
+    </script>
+  </body>
+</html>
